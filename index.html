@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QT - Shop Đồ Gia Dụng Trong Bếp</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'qt-blue': '#1e40af', 
+                        'qt-accent': '#3b82f6', 
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <!-- Thiết lập Font Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: white;
+            font-family: 'Inter', sans-serif;
+        }
+        /* Ẩn tất cả các trang nội dung, chỉ hiển thị trang đang được chọn */
+        .page-content {
+            display: none;
+        }
+    </style>
+</head>
+<body class="min-h-screen pt-20">
+
+    <!-- Thanh Banner/Header Cố Định -->
+    <header class="fixed top-0 left-0 w-full bg-white shadow-lg z-50 flex items-center h-20">
+        <!-- 1. PHẦN LOGO QT -->
+        <div class="w-1/5 h-full bg-qt-blue flex items-center justify-center cursor-pointer rounded-r-2xl" onclick="showPage('home')">
+            <span class="text-white text-5xl font-extrabold tracking-wider p-4" title="Về trang chủ">QT Shop</span>
+        </div>
+
+        <!-- 2. PHẦN NỘI DUNG CHÍNH  -->
+        <div class="flex-grow flex items-center justify-between px-6">
+            
+            <!-- THANH TÌM KIẾM -->
+            <div class="flex-1 max-w-xl mx-auto">
+                <div class="relative w-full">
+                    <!-- ĐÃ THÊM ID VÀ SỰ KIỆN ONKEYUP ĐỂ XỬ LÝ TÌM KIẾM -->
+                    <input type="text" id="search-input" onkeyup="handleSearch()" placeholder="Tìm kiếm đồ dùng nhà bếp..." 
+                           class="w-full p-3 pl-10 border border-gray-300 rounded-lg focus:ring-qt-accent focus:border-qt-accent shadow-inner transition duration-200">
+                    <!-- Icon tìm kiếm -->
+                    <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                </div>
+            </div>
+
+            <!-- CÁC MỤC ĐIỀU HƯỚNG BÊN PHẢI -->
+            <nav class="flex space-x-4 ml-6 text-lg font-medium">
+                <button onclick="showPage('home')" class="text-gray-700 hover:text-qt-blue transition duration-150 p-2 rounded-lg">Trang Chủ</button>
+                <button onclick="showPage('taikhoan')" class="text-gray-700 hover:text-qt-blue transition duration-150 p-2 rounded-lg flex items-center">
+                    <svg class="w-6 h-6 mr-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
+                    Tài Khoản
+                </button>
+                <button onclick="showPage('giohang')" class="text-gray-700 hover:text-qt-blue transition duration-150 p-2 rounded-lg flex items-center relative">
+                    <svg class="w-6 h-6 mr-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
+                    Giỏ Hàng (<span id="cart-count">0</span>)
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- CONTAINER CHO TẤT CẢ CÁC TRANG -->
+    <main class="p-8 max-w-7xl mx-auto">
+
+        <!-- 1. TRANG CHỦ -->
+        <section id="home" class="page-content" style="display: block;">
+            <h1 class="text-4xl font-bold text-qt-blue mb-8">Danh Mục Sản Phẩm</h1>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                
+                <!-- Card Danh mục: DAO  -->
+                <div class="bg-white rounded-xl shadow-xl overflow-hidden transform hover:scale-[1.02] transition duration-300 cursor-pointer" onclick="showPage('dao')">
+                   
+                    <img src="https://cdn2.fptshop.com.vn/unsafe/1920x0/filters:format(webp):quality(75)/cac_loai_dao_dau_bep_01_e0068a1d7e.jpg" alt="Dao Bếp" class="w-full h-64 object-cover">
+                    <div class="p-6">
+                        <h2 class="text-2xl font-semibold text-gray-800">Dao Bếp</h2>
+                        <p class="mt-2 text-gray-600">Các loại dao làm bếp chuyên nghiệp.</p>
+                        <button class="mt-4 w-full bg-qt-accent text-white py-2 rounded-lg font-medium hover:bg-qt-blue transition duration-200">Xem Chi Tiết</button>
+                    </div>
+                </div>
+
+                <!-- Card Danh mục: CHẢO  -->
+                <div class="bg-white rounded-xl shadow-xl overflow-hidden transform hover:scale-[1.02] transition duration-300 cursor-pointer" onclick="showPage('chao')">
+                 
+                    <img src="https://elmich.vn/wp-content/uploads/2024/10/5957.jpg" alt="Chảo Chống Dính" class="w-full h-64 object-cover">
+                    <div class="p-6">
+                        <h2 class="text-2xl font-semibold text-gray-800">Chảo Các Loại</h2>
+                        <p class="mt-2 text-gray-600">Chảo chống dính, chảo gang, chảo đá cao cấp.</p>
+                        <button class="mt-4 w-full bg-qt-accent text-white py-2 rounded-lg font-medium hover:bg-qt-blue transition duration-200">Xem Chi Tiết</button>
+                    </div>
+                </div>
+
+                <!-- Card Danh mục: NỒI  -->
+                <div class="bg-white rounded-xl shadow-xl overflow-hidden transform hover:scale-[1.02] transition duration-300 cursor-pointer" onclick="showPage('noi')">
+                   
+                    <img src="https://mekoong.com/wp-content/uploads/2021/06/Combo-6-noi-duong-sinh-size-nho.jpg" alt="Nồi Áp Suất" class="w-full h-64 object-cover">
+                    <div class="p-6">
+                        <h2 class="text-2xl font-semibold text-gray-800">Nồi & Bộ Nồi</h2>
+                        <p class="mt-2 text-gray-600">Các loại nồi, bộ nồi Inox, nồi áp suất chất lượng.</p>
+                        <button class="mt-4 w-full bg-qt-accent text-white py-2 rounded-lg font-medium hover:bg-qt-blue transition duration-200">Xem Chi Tiết</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. TRANG DAO -->
+        <section id="dao" class="page-content">
+            <nav class="mb-6 text-lg">
+                <!-- Nút về trang chính -->
+                <button onclick="showPage('home')" class="text-qt-accent hover:text-qt-blue font-medium transition duration-150">← Trang Chủ</button>
+            </nav>
+            <h1 class="text-4xl font-bold text-qt-blue mb-8">Danh Mục Dao Bếp</h1>
+            <div id="dao-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                
+            </div>
+        </section>
+
+        <!-- 3. TRANG CHẢO  -->
+        <section id="chao" class="page-content">
+            <nav class="mb-6 text-lg">
+                <!-- Nút về trang chính -->
+                <button onclick="showPage('home')" class="text-qt-accent hover:text-qt-blue font-medium transition duration-150">← Trang Chủ</button>
+            </nav>
+            <h1 class="text-4xl font-bold text-qt-blue mb-8">Danh Mục Chảo Các Loại</h1>
+            <div id="chao-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                
+            </div>
+        </section>
+
+        <!-- 4. TRANG NỒI -->
+        <section id="noi" class="page-content">
+            <nav class="mb-6 text-lg">
+                <!-- Nút về trang chính -->
+                <button onclick="showPage('home')" class="text-qt-accent hover:text-qt-blue font-medium transition duration-150">← Trang Chủ</button>
+            </nav>
+            <h1 class="text-4xl font-bold text-qt-blue mb-8">Danh Mục Nồi & Bộ Nồi</h1>
+            <div id="noi-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          
+            </div>
+        </section>
+
+        <!-- 5. TRANG TÀI KHOẢN - Đăng nhập/Đăng ký -->
+        <section id="taikhoan" class="page-content">
+            <h1 class="text-4xl font-bold text-qt-blue mb-10 text-center">Tài Khoản</h1>
+            <div class="max-w-md mx-auto bg-gray-50 p-8 rounded-xl shadow-xl border border-gray-100">
+                <h2 class="text-3xl font-semibold mb-6 text-gray-800 text-center">Đăng Nhập / Đăng Ký</h2>
+                <form id="login-form" class="space-y-4">
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-gray-700">Email:</label>
+                        <input type="email" id="email" required class="mt-1 w-full p-3 border border-gray-300 rounded-lg focus:ring-qt-accent focus:border-qt-accent">
+                    </div>
+                    <div>
+                        <label for="password" class="block text-sm font-medium text-gray-700">Mật Khẩu:</label>
+                        <input type="password" id="password" required class="mt-1 w-full p-3 border border-gray-300 rounded-lg focus:ring-qt-accent focus:border-qt-accent">
+                    </div>
+                    <button type="submit" class="w-full bg-qt-blue text-white py-3 rounded-lg font-semibold hover:bg-qt-accent transition duration-200 shadow-md">Đăng Nhập</button>
+                </form>
+                <div class="mt-6 text-center">
+                    <p class="text-sm text-gray-600">Chưa có tài khoản?</p>
+                    <button id="show-register" class="text-qt-accent hover:text-qt-blue font-medium mt-1 transition duration-150" onclick="alertCustom('Chức năng Đăng Ký đang được phát triển.')">Đăng Ký Tài Khoản Mới</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. TRANG GIỎ HÀNG - Xem giỏ hàng -->
+        <section id="giohang" class="page-content">
+            <h1 class="text-4xl font-bold text-qt-blue mb-8">Giỏ Hàng Của Bạn</h1>
+            <div id="cart-items" class="space-y-4">
+            
+            </div>
+            <div id="cart-summary" class="mt-8 pt-4 border-t-2 border-gray-200 flex justify-end">
+                <p class="text-2xl font-bold text-gray-800">Tổng cộng: <span id="cart-total" class="text-qt-blue">0 VNĐ</span></p>
+            </div>
+            <div class="flex justify-end mt-4">
+                <button class="bg-green-500 text-white py-3 px-6 rounded-lg font-semibold hover:bg-green-600 transition duration-200 shadow-lg" onclick="checkout()">Thanh Toán</button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white p-6 mt-12">
+        <div class="max-w-7xl mx-auto flex justify-between items-center text-sm">
+            <p>&copy; 2025 QT Shop. Tất cả bản quyền được bảo lưu.</p>
+            <div class="space-y-1 text-right">
+                <p>SĐT Liên Hệ: 012345678</p>
+                <p>Email: <a href="mailto:QTShop@gmail.com" class="text-qt-accent hover:underline">QTShop@gmail.com</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal tùy chỉnh thay thế alert() -->
+    <div id="custom-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-[100]">
+        <div class="bg-white p-6 rounded-xl shadow-2xl w-80">
+            <h3 id="modal-title" class="text-xl font-bold text-qt-blue mb-3">Thông Báo</h3>
+            <p id="modal-message" class="text-gray-700 mb-5"></p>
+            <button onclick="closeModal()" class="w-full bg-qt-accent text-white py-2 rounded-lg hover:bg-qt-blue transition duration-200">Đóng</button>
+        </div>
+    </div>
+
+    <!-- Modal Xem Ảnh Sản Phẩm -->
+    <div id="image-viewer-modal" class="fixed inset-0 bg-black bg-opacity-75 hidden items-center justify-center z-[110]" onclick="closeImageViewer()">
+        <div class="relative bg-white p-4 rounded-xl shadow-2xl max-w-4xl max-h-[90vh]" onclick="event.stopPropagation()">
+            <button onclick="closeImageViewer()" class="absolute top-2 right-2 text-white bg-black bg-opacity-50 rounded-full p-2 hover:bg-opacity-75 z-10">
+                <!-- Icon X (Close) -->
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+            <img id="modal-image" src="" alt="Sản phẩm phóng to" class="max-w-full max-h-[80vh] object-contain rounded-lg">
+            <p id="modal-image-caption" class="text-center mt-3 text-lg font-semibold text-gray-800"></p>
+        </div>
+    </div>
+
+    <script>
+    
+        const products = {
+            dao: [
+                { id: 'd1', name: 'Dao Santoku Nhật', price: 750000, 
+                  img: 'https://media.loveitopcdn.com/1729/thumb/140711-dao-santoku.png',
+                  description: 'Lưỡi thép không gỉ Damascus, sắc bén, chuyên dụng cho đầu bếp.' }, 
+                { id: 'd2', name: 'Dao Thái Lan', price: 420000, 
+                  img: 'https://vn-test-11.slatic.net/p/02c8366a36a2c1ce3bb0608a2ed81098.jpg',
+                  description: 'Cán dao màu vàng, chữ logo dập nổi trên cán dao và lưỡi. Lưỡi dao sắc bén bằng inox 430 chống gỉ cao cấp.' }, 
+                { id: 'd3', name: 'Dao Phay', price: 600000, 
+                  img: 'https://images2.thanhnien.vn/zoom/686_429/Uploaded/ngocquy/2020_06_17/dao-phay-shutterstock_RUIZ.jpg',
+                  description: 'Loại dao bếp có lưỡi bản to, nặng, dùng để chặt xương, thịt hoặc băm nhuyễn thực phẩm.' }, 
+                { id: 'd4', name: 'Dao Bào Inox', price: 150000, 
+                  img: 'https://vn-test-11.slatic.net/p/c0cf1226d3814ba4a5c937b4a7685c47.png',
+                  description: 'Dùng để gọt vỏ rau củ, quả. Lưỡi nhỏ, sắc, thường có thiết kế thẳng hoặc xoay để dễ gọt.' }, 
+            ],
+            chao: [
+                { id: 'c1', name: 'Chảo Chống Dính', price: 890000, 
+                  img: 'https://elmich.vn/wp-content/uploads/2023/10/2355750mn_1.jpg',
+                  description: 'Chất liệu hợp kim nhôm, lớp chống dính Teflon an toàn, bền bỉ.' }, 
+                { id: 'c2', name: 'Chảo Gang', price: 1200000, 
+                  img: 'https://beproyal.com/wp-content/uploads/2020/10/chao-gang-staub-cast-iron-20-black.jpg',
+                  description: 'Giữ nhiệt cực tốt, phù hợp cho món áp chảo và chiên sâu.' }, 
+                { id: 'c3', name: 'Chảo Đá Vân Cẩm Thạch', price: 950000, 
+                  img: 'https://bizweb.dktcdn.net/thumb/large/100/448/192/products/653-nag2206-avatar-1.jpg?v=1654154863897',
+                  description: 'Bề mặt đá chống dính tự nhiên, không PFOA, an toàn cho sức khỏe.' }, 
+                { id: 'c4', name: 'Chảo Xào Size Lớn', price: 1500000, 
+                  img: 'https://vn-live-01.slatic.net/p/3ac2227446c9f08c1619f2630a381f5e.jpg',
+                  description: 'Đường kính 32cm, đáy từ, thích hợp cho gia đình đông người.' }, 
+            ],
+            noi: [
+                { id: 'n1', name: 'Bộ Nồi Inox 3 Món', price: 2500000, 
+                  img: 'https://product.hstatic.net/200000574527/product/bo-noi-inox-3-day-sunhouse-shg302-1_dfb7b2fb92a042d0a28b863477d2ab3f_1024x1024.jpg',
+                  description: 'Bộ 3 nồi Inox 304, đáy 5 lớp, dùng được trên mọi loại bếp.' }, 
+                { id: 'n2', name: 'Nồi Áp Suất Điện Tử', price: 1800000, 
+                  img: 'https://fulco.vn/static/media/san-pham/t%E1%BB%95ng%20h%E1%BB%A3p%20%E1%BA%A3nh%20sp/fc3379/DSC03858.jpg',
+                  description: 'Đa chức năng, nấu nhanh, giữ trọn dinh dưỡng, có hẹn giờ.' }, 
+                { id: 'n3', name: 'Nồi Đất', price: 550000, 
+                  img: 'https://product.hstatic.net/1000382508/product/gae04519_61cf54863c634591bf494225fac9b409_master.jpg',
+                  description: 'Giữ ấm lâu, thích hợp nấu cháo, kho cá, tạo hương vị truyền thống.' }, 
+                { id: 'n4', name: 'Nồi Chiên Không Dầu', price: 1100000, 
+                  img: 'https://linhanhmart.com/wp-content/uploads/2018/11/1795856_1_L.jpg',
+                  description: 'Chiên, nướng thức ăn không hoặc ít dùng dầu. Sử dụng luồng khí nóng tuần hoàn để làm chín thực phẩm, giúp giảm mỡ.' }, 
+            ],
+        };
+
+        let cart = []; 
+        let activeProductCategory = null; 
+
+        // --- HÀM HỖ TRỢ HIỂN THỊ ---
+
+        /**
+         * Chuyển đổi số sang định dạng tiền tệ VNĐ.
+         */
+        const formatCurrency = (amount) => {
+            return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount);
+        };
+
+        /**
+         * Hiển thị modal thông báo tùy chỉnh thay cho alert()
+         */
+        const alertCustom = (message, title = 'Thông Báo') => {
+            document.getElementById('modal-title').textContent = title;
+            document.getElementById('modal-message').textContent = message;
+            document.getElementById('custom-modal').classList.remove('hidden');
+            document.getElementById('custom-modal').classList.add('flex');
+        };
+
+        const closeModal = () => {
+            document.getElementById('custom-modal').classList.add('hidden');
+            document.getElementById('custom-modal').classList.remove('flex');
+        };
+
+        /**
+         * Hiển thị Modal xem ảnh sản phẩm (MỚI)
+         */
+        const viewImage = (imageUrl, caption) => {
+            document.getElementById('modal-image').src = imageUrl;
+            document.getElementById('modal-image-caption').textContent = caption;
+            document.getElementById('image-viewer-modal').classList.remove('hidden');
+            document.getElementById('image-viewer-modal').classList.add('flex');
+        };
+
+        const closeImageViewer = () => {
+            document.getElementById('image-viewer-modal').classList.add('hidden');
+            document.getElementById('image-viewer-modal').classList.remove('flex');
+        };
+
+
+        /**
+         * Cập nhật số lượng sản phẩm trong giỏ hàng trên Header
+         */
+        const updateCartCount = () => {
+            const count = cart.reduce((sum, item) => sum + item.quantity, 0);
+            document.getElementById('cart-count').textContent = count;
+        };
+
+        /**
+         * Tạo thẻ sản phẩm HTML với ảnh, giá, nút Mua Ngay và Thêm Giỏ Hàng (ĐÃ CẬP NHẬT MÔ TẢ VÀ ONCLICK CHO ẢNH)
+         */
+        const createProductCard = (product, category) => {
+            return `
+                <div class="bg-white p-4 rounded-xl shadow-lg border border-gray-100 flex flex-col h-full hover:shadow-xl transition duration-300">
+                    <!-- Ảnh sản phẩm, BẤM VÀO ĐỂ XEM ẢNH -->
+                    <img src="${product.img}" alt="${product.name}" 
+                         class="w-full h-48 object-cover rounded-lg mb-4 cursor-pointer" 
+                         onclick="viewImage('${product.img}', '${product.name}')"
+                         onerror="this.onerror=null;this.src='https://placehold.co/400x300/cccccc/333333?text=${category.toUpperCase()}'">
+                         
+                    <h3 class="text-xl font-semibold text-gray-800 mb-2 flex-grow">${product.name}</h3>
+                    
+                    <!-- THÔNG TIN MỚI: MÔ TẢ NGẮN -->
+                    <p class="text-sm text-gray-500 mb-3">${product.description}</p> 
+
+                    <p class="text-2xl font-bold text-red-600 mb-4">${formatCurrency(product.price)}</p>
+                    <div class="space-y-2">
+                        <button onclick="addToCart('${product.id}', '${category}')" class="w-full bg-yellow-500 text-white py-2 rounded-lg font-medium hover:bg-yellow-600 transition duration-200 shadow-md">
+                            Thêm vào Giỏ hàng
+                        </button>
+                        <button onclick="buyNow('${product.id}', '${category}')" class="w-full bg-qt-accent text-white py-2 rounded-lg font-medium hover:bg-qt-blue transition duration-200 shadow-md">
+                            Mua Ngay
+                        </button>
+                    </div>
+                </div>
+            `;
+        };
+        
+        /**
+         * Hiển thị danh sách sản phẩm cho một danh mục (có kèm lọc tìm kiếm)
+         */
+        const renderProductList = (category, searchTerm = '') => {
+            const listElement = document.getElementById(`${category}-list`);
+            if (!listElement) return;
+
+            const lowerCaseSearchTerm = searchTerm.toLowerCase().trim();
+            
+            // Lọc sản phẩm theo từ khóa tìm kiếm
+            const filteredProducts = products[category].filter(p => 
+                p.name.toLowerCase().includes(lowerCaseSearchTerm)
+            );
+
+            // Tạo thẻ sản phẩm HTML
+            if (filteredProducts.length > 0) {
+                listElement.innerHTML = filteredProducts.map(p => createProductCard(p, category)).join('');
+            } else {
+                // Hiển thị thông báo khi không tìm thấy sản phẩm
+                listElement.innerHTML = `
+                    <div class="col-span-4 text-center py-10">
+                        <p class="text-xl text-gray-500">Không tìm thấy sản phẩm nào khớp với từ khóa "${searchTerm}".</p>
+                    </div>
+                `;
+            }
+        };
+
+        /**
+         * Xử lý tìm kiếm khi người dùng gõ phím
+         */
+        const handleSearch = () => {
+            if (activeProductCategory) {
+                const searchTerm = document.getElementById('search-input').value;
+                renderProductList(activeProductCategory, searchTerm);
+            }
+        };
+
+        /**
+         * Render nội dung Giỏ hàng
+         */
+        const renderCart = () => {
+            const cartItemsEl = document.getElementById('cart-items');
+            let total = 0;
+            let cartHtml = '';
+
+            if (cart.length === 0) {
+                cartHtml = '<p class="text-center text-xl text-gray-500 py-10">Giỏ hàng của bạn đang trống.</p>';
+            } else {
+                cartHtml = cart.map(item => {
+                    // Tìm dữ liệu sản phẩm gốc
+                    const productData = products[item.category].find(p => p.id === item.productId);
+                    if (!productData) return '';
+
+                    const itemTotal = productData.price * item.quantity;
+                    total += itemTotal;
+
+                    return `
+                        <div class="flex items-center p-4 bg-white rounded-lg shadow-sm border border-gray-100">
+                            <img src="${productData.img}" alt="${productData.name}" class="w-16 h-16 object-cover rounded-md mr-4">
+                            <div class="flex-grow">
+                                <h4 class="font-semibold text-gray-800">${productData.name} (${item.category.toUpperCase()})</h4>
+                                <p class="text-sm text-gray-600">${formatCurrency(productData.price)} x ${item.quantity}</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="font-bold text-lg text-qt-blue">${formatCurrency(itemTotal)}</p>
+                                <button onclick="removeFromCart('${productData.id}', '${item.category}')" class="text-red-500 hover:text-red-700 text-sm mt-1">Xóa</button>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            cartItemsEl.innerHTML = cartHtml;
+            document.getElementById('cart-total').textContent = formatCurrency(total);
+            updateCartCount();
+        };
+
+
+        // --- CHỨC NĂNG CỐT LÕI (Logic) ---
+
+        /**
+         * Chuyển đổi giữa các trang (sections)
+         */
+        const showPage = (pageId) => {
+            // Ẩn tất cả các trang
+            document.querySelectorAll('.page-content').forEach(section => {
+                section.style.display = 'none';
+            });
+            const currentPage = document.getElementById(pageId);
+            if (currentPage) {
+                currentPage.style.display = 'block';
+            }
+
+            // Xóa nội dung tìm kiếm và reset trạng thái danh mục
+            document.getElementById('search-input').value = '';
+            activeProductCategory = null;
+
+
+            // Xử lý render nội dung đặc biệt cho từng trang danh mục
+            if (pageId === 'dao' || pageId === 'chao' || pageId === 'noi') {
+                activeProductCategory = pageId; // Cập nhật danh mục đang hoạt động
+                renderProductList(pageId);
+            }
+            if (pageId === 'giohang') {
+                renderCart();
+            }
+
+            // Đảm bảo cuộn về đầu trang sau khi chuyển trang
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        };
+
+
+        /**
+         * Thêm sản phẩm vào giỏ hàng
+         */
+        const addToCart = (productId, category) => {
+            const existingItem = cart.find(item => item.productId === productId && item.category === category);
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({ productId, category, quantity: 1 });
+            }
+            updateCartCount();
+            alertCustom(`Đã thêm 1 sản phẩm vào giỏ hàng!`, 'Thành Công');
+            if (document.getElementById('giohang').style.display === 'block') {
+                renderCart();
+            }
+        };
+
+        /**
+         * Xóa sản phẩm khỏi giỏ hàng
+         */
+        const removeFromCart = (productId, category) => {
+            cart = cart.filter(item => !(item.productId === productId && item.category === category));
+            renderCart();
+            updateCartCount();
+            alertCustom('Đã xóa sản phẩm khỏi giỏ hàng.', 'Xóa Sản Phẩm');
+        };
+
+        /**
+         * Xử lý chức năng Mua Ngay (chuyển thẳng đến thanh toán)
+         */
+        const buyNow = (productId, category) => {
+             // Xóa giỏ hàng hiện tại, chỉ mua 1 món này
+             cart = [];
+             cart.push({ productId, category, quantity: 1 });
+             showPage('giohang');
+             alertCustom('Sản phẩm đã được thêm vào giỏ hàng. Vui lòng nhấn "Thanh Toán" để tiếp tục.', 'Mua Ngay');
+        };
+
+        /**
+         * Xử lý chức năng Thanh Toán
+         */
+        const checkout = () => {
+            if (cart.length === 0) {
+                alertCustom('Giỏ hàng của bạn đang trống. Vui lòng chọn sản phẩm trước.', 'Lỗi Thanh Toán');
+                return;
+            }
+            
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            const totalAmount = document.getElementById('cart-total').textContent;
+            
+            // Xóa giỏ hàng sau khi "thanh toán" thành công
+            cart = [];
+            updateCartCount();
+            
+            alertCustom(`Đã thanh toán thành công ${totalItems} món hàng với tổng cộng ${totalAmount}. Cảm ơn quý khách!`, 'Thanh Toán Hoàn Tất');
+            showPage('home'); // Về trang chủ
+        };
+
+
+        // --- KHỞI TẠO CHẠY ỨNG DỤNG ---
+        window.onload = () => {
+            showPage('home');
+            updateCartCount();
+
+            // Xử lý form Đăng Nhập giả lập
+            document.getElementById('login-form').addEventListener('submit', function(event) {
+                event.preventDefault();
+                alertCustom('Đăng nhập thành công! (Chức năng này chỉ mang tính chất minh họa)', 'Chào Mừng');
+            });
+        };
+    </script>
+</body>
+</html>
